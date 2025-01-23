@@ -1,6 +1,6 @@
 import 'bulma/css/bulma.css';
 import './App.scss';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import classNames from 'classnames';
 
 export const goodsFromServer: Goods[] = [
@@ -67,10 +67,10 @@ export const App: React.FC = () => {
   const [field, setField] = useState<SortType>(SortType.None);
   const [isReversed, setIsReversed] = useState<boolean>(false);
   const visibleGoods = getPreparedGoods(goodsFromServer, field, isReversed);
-  const Reset = () => {
+  const reset = useCallback(() => {
     setField(SortType.None);
     setIsReversed(false);
-  };
+  }, []);
 
   return (
     <div className="section content">
@@ -99,7 +99,7 @@ export const App: React.FC = () => {
           onClick={() => setIsReversed(!isReversed)}
           type="button"
           className={classNames('button is-warning', {
-            'is-light': isReversed === false,
+            'is-light': !isReversed,
           })}
         >
           Reverse
@@ -107,7 +107,7 @@ export const App: React.FC = () => {
 
         {(field || isReversed) && (
           <button
-            onClick={Reset}
+            onClick={reset}
             type="button"
             className="button is-danger is-light"
           >
